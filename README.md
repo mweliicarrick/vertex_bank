@@ -68,7 +68,7 @@ static/
 ## 🔧 Installation & Setup
 
 ### 1. Clone the repository
-git clone https://github.com/your-username/bank-system.git  
+git clone https://github.com/mweliicarrick/vertex_bank.git  
 cd bank-system  
 
 ### 2. Create virtual environment (optional)
@@ -102,4 +102,4 @@ This project is for educational purposes only and does not connect to real banki
 
 ## 👨‍💻 Author
 
-Built by: **Your Name**
+Built by: **Mwelii Carrick**
