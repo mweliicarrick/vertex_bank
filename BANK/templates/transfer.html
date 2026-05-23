@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Transfer | Carrick Bank</title>
+    <style>
+        body {
+            background: #0b0f0c;
+            color: #e0ffe6;
+            font-family: Arial;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+        background: #000;
+        padding: 15px 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #00c853;
+        }
+
+        .navbar h2 {
+            color: #00c853;
+            margin: 0;
+        }
+        .box {
+            background: #000;
+            padding: 30px;
+            width: 350px;
+            border-radius: 10px;
+            border: 1px solid #00c853;
+            margin: 50px auto;
+        }
+        h3 {
+            color: #00c853;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #00c853;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+        }
+         button:hover {
+            background: #00e676;
+        }
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+
+        .popup-box {
+            background: #0b0f0c;
+            border: 2px solid #00c853;
+            padding: 25px 30px;
+            border-radius: 10px;
+            text-align: center;
+            color: #e0ffe6;
+            width: 300px;
+        }
+
+        .popup-box button {
+            margin-top: 15px;
+            padding: 8px 20px;
+            background: #00c853;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .popup-box button:hover {
+            background: #00e676;
+         }
+        .footer-marquee {
+            position: fixed;       /* Stick at the bottom */
+            bottom: 0;             /* At the bottom of the page */
+            width: 100%;           /* Full width */
+            background: #000;      /* Same as navbar/body */
+            color: #00c853;        /* Green text */
+            padding: 10px 0;
+            font-weight: bold;
+            white-space: nowrap;   /* Prevent line breaks */
+            overflow: hidden;      /* Hide overflowing text */
+            box-sizing: border-box;
+        }
+
+        .footer-marquee span {
+            display: inline-block;
+            padding-left: 100%;    /* Start off-screen right */
+            animation: scroll 15s linear infinite; /* Scroll left infinitely */
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+
+
+    </style>
+</head>
+<body>
+<div class="navbar">
+        <h2>VERTEX BANK</h2>
+    </div>
+<div class="box">
+    <h3>Transfer Money</h3>
+
+     <!-- Display account number inside the container -->
+    <div style="margin-bottom: 15px; font-weight: bold; text-align: center;">
+        Account Number: {{ user.account_number }}
+    </div>
+
+    <form action="{{ url_for('transfer') }}" method="POST">
+        <input type="text" name="to_account" placeholder="Recipient Account Number" required>
+        <input type="number" name="amount" placeholder="Amount (KES)" required>
+        <button type="submit">Send</button>
+    </form>
+     <div style="margin: 25px; text-align: center;">
+        <button onclick="window.location.href='{{ url_for('dashboard', username=session['username']) }}'">
+            back
+        </button>
+    </div>
+</div>
+{% if message %}
+<div class="popup-overlay">
+    <div class="popup-box">
+        <p>{{ message }}</p>
+        <button onclick="closePopup()">OK</button>
+    </div>
+</div>
+{% endif %}
+
+<script>
+    function closePopup() {
+        document.querySelector('.popup-overlay').style.display = 'none';
+    }
+</script>
+<div class="footer-marquee">
+    <span>Banking at the Peak of Intelligence</span>
+</div>
+
+</body>
+
+</html>
