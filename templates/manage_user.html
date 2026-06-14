@@ -1,0 +1,145 @@
+<head>
+    <title>Vertex Bank | Manage User</title>
+</head>
+<body>
+<div class="box">
+    <!-- Back button at top -->
+    <div style="text-align: left; margin-bottom: 15px;">
+        <button class="small-btn" onclick="window.location.href='{{ url_for('view_users') }}'">Back</button>
+    </div>
+
+    <h2>Manage User: {{ user.first_name }} {{ user.last_name }}</h2>
+    <p style="text-align: center;">Account Number: {{ user.account_number }} | Status: {{ user.status|capitalize }}</p>
+
+    <!-- Status toggle -->
+    <form method="POST" action="{{ url_for('toggle_status', account_number=user.account_number) }}" style="text-align: center;">
+        {% if user.status == 'active' %}
+            <button type="submit" class="suspend-btn">Suspend Account</button>
+        {% else %}
+            <button type="submit" class="activate-btn">Activate Account</button>
+        {% endif %}
+    </form>
+
+    {% if message %}
+        <p style="text-align:center; color:#00e676; font-weight:bold;">{{ message }}</p>
+    {% endif %}
+
+    <!-- ===== Fraud Alerts Section ===== -->
+    {% if alerts %}
+    <h2 style="margin-top:30px;">Fraud Alerts</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Reason</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Previous Action</th> <!-- NEW COLUMN -->
+                    <th>Next Step</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in alerts %}
+                <tr>
+                    <td>{{ alert.date }}</td>
+                    <td>{{ alert.reason }}</td>
+                    <td>KES {{ "{:,}".format(alert.amount) }}</td>
+                    <td>{{ alert.status|default('Pending')|capitalize }}</td>
+                    <td>{{ alert.action|default('None')|capitalize }}</td> 
+                    <td>
+                        {% if alert.action == 'legitimate' %}
+                            <span style="color:#00e676; font-weight:bold;">Review Complete</span>
+                        {% else %}
+                            <form method="POST" style="display:inline;">
+                                <input type="hidden" name="alert_id" value="{{ alert.id }}">
+                                <input type="hidden" name="amount" value="{{ alert.amount }}">
+                                <input type="hidden" name="from_account" value="{{ alert.from_account or '' }}">
+                                <input type="hidden" name="to_account" value="{{ alert.to_account or '' }}">
+
+                                <!-- Legitimate button -->
+                                <button type="submit" name="action" value="legitimate" class="legit-btn">
+                                    ✔Legitimate
+                                </button>
+
+                                <!-- Investigate button -->
+                                <button type="submit" name="action" value="investigate" class="investigate-btn">
+                                    🔍Investigate
+                                </button>
+
+                                <!-- Freeze button -->
+                                <button type="submit" name="action" value="freeze" class="freeze-btn">
+                                    ❄Freeze
+                                </button>
+                            </form>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endif %}
+
+    <h2>Transaction History</h2>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>From</th>
+                    <th>To</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for t in transactions %}
+                <tr class="
+                            {% if t.type == 'transfer_in' or t.type == 'deposit' %}in
+                            {% elif t.type == 'transfer_out' or t.type == 'withdraw' %}out
+                            {% else %}{% endif %}
+                        ">
+                    <td>{{ t.date }}</td>
+                    <td>{{ t.type|capitalize }}</td>
+                    <td>KES {{ "{:,}".format(t.amount) }}</td>
+                    <td>{{ t.from_account or '-' }}</td>
+                    <td>{{ t.to_account or '-' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<style>
+/* === Existing styles === */
+body { background: #0b0f0c; color: #e0ffe6; font-family: Arial; display: flex; justify-content: center; align-items: flex-start; padding-top: 30px; min-height: 100vh; }
+.box { background: #000; padding: 30px; width: 750px; length: 100%; border-radius: 10px; border: 1px solid #00c853; }
+h2 { color: #00c853; text-align: center; }
+button { width: 50%; padding: 12px; font-weight: bold; cursor: pointer; margin-top: 10px; }
+.small-btn { width: auto; padding: 6px 15px; font-size: 14px; background: #00c853; color: #000; font-weight: bold; border-radius: 5px; }
+.small-btn:hover { background: #00e676; }
+.table-container { max-height: 300px; overflow-y: auto; margin-top: 15px; border: 1px solid #00c853; }
+.table-container table { width: 100%; border-collapse: collapse; }
+.table-container th, .table-container td { border: 1px solid #00c853; padding: 8px; text-align: center; }
+.table-container th { background: #00c853; color: #000; position: sticky; top: 0; z-index: 1; }
+.table-container tr:nth-child(even) { background: #111; }
+.table-container tr:nth-child(odd) { background: #000; }
+/* Transaction type coloring */
+tr.in td { color: #00e676; }
+tr.out td { color: #ff5252; }
+/* Account actions */
+.suspend-btn { background: red; color: #fff; font-weight: bold; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; }
+.suspend-btn:hover { background: #ff4d4d; }
+.activate-btn { background: #00c853; color: #000; font-weight: bold; padding: 8px 20px; border: none; border-radius: 5px; cursor: pointer; }
+.activate-btn:hover { background: #00e676; }
+/* Fraud alert buttons */
+.legit-btn { background: #00c853; color: #000; font-weight: bold; padding: 5px 12px; border: none; border-radius: 5px; cursor: pointer; margin-right:5px;}
+.legit-btn:hover { background: #00e676; }
+.investigate-btn { background: #ffc107; color: #000; font-weight: bold; padding: 5px 12px; border: none; border-radius: 5px; cursor: pointer; margin-right:5px;}
+.investigate-btn:hover { background: #ffd54f;}
+.freeze-btn { background: red; color: #fff; font-weight: bold;padding: 5px 12px; border: none; border-radius: 5px; cursor: pointer;}
+.freeze-btn:hover { background: #ff4d4d; }
+</style>
+</body>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>CARRICK BANK</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: linear-gradient(135deg, #020617, #0f172a);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                color: #e5e7eb;
+            }
+
+            .login-container {
+                background: #020617;
+                padding: 32px;
+                border-radius: 12px;
+                width: 350px;
+                border: 1px solid #1f2933;     
+                box-shadow: 0 0 30px rgba(34, 197, 94, 0.15);
+                text-align: center;
+            }
+
+            h2 {
+                color: #22c55e;
+                margin-bottom: 20px;
+                letter-spacing: 1px;
+            }
+            h3{
+                color:#00c853
+            }
+
+            /* Round logo */
+            .logo {
+                width: 120px;       /* size of the logo */
+                height: 120px;
+                border-radius: 50%; /* makes it circular */
+                object-fit: cover;  /* crop image to fit */
+                border: 2px solid #22c55e;
+                margin-bottom: 15px;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 12px;
+                margin: 10px 0;
+                border-radius: 6px;
+                border: 1px solid #1f2933;
+                background: #020617;
+                color: #e5e7eb;
+            }
+
+            input::placeholder {
+                color: #9ca3af;
+            }
+
+            input:focus, select:focus {
+                outline: none;
+                border-color: #22c55e;
+                box-shadow: 0 0 0 1px #22c55e;
+            }
+
+            button {
+                width: 100%;
+                padding: 12px;
+                margin-top: 12px;
+                background: #22c55e;
+                color: #020617;
+                font-weight: bold;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                transition: background 0.3s ease;
+            }
+
+            button:hover {
+                background: #16a34a;
+            }
+
+            .forgot {
+                margin-top: 14px;
+            }
+
+            .forgot a {
+                color: #9ca3af;
+                text-decoration: none;
+                font-size: 14px;
+            }
+
+            .forgot a:hover {
+                color: #22c55e;
+            }
+             .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            }
+
+            .popup-box {
+                background: #0b0f0c;
+                border: 2px solid #00c853;
+                padding: 25px 30px;
+                border-radius: 10px;
+                text-align: center;
+                color: #e0ffe6;
+                width: 300px;
+            }
+
+            .popup-box button {
+                margin-top: 15px;
+                padding: 8px 20px;
+                background: #00c853;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+            }
+
+            .popup-box button:hover {
+                background: #00e676;
+            }
+
+            /* ===== PASSWORD TOGGLE ===== */
+            .password-wrapper {
+                position: relative;
+                width: 100%;
+            }
+
+            .password-wrapper input {
+                width: 100%;
+                padding: 12px 40px 12px 12px;
+                box-sizing: border-box;
+            }
+
+            .toggle-eye {
+                position: absolute;
+                right: 12px;
+                top: 50%;
+                transform: translateY(-50%);
+                cursor: pointer;
+                font-size: 18px;
+                color: #22c55e;
+                user-select: none;
+            }
+
+            .toggle-eye:hover {
+                color: #16a34a;
+            }
+        </style>
+    </head>
+    <body>
+
+        <div class="login-container">
+                <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Logo" class="logo">
+                <h2>VERTEX BANK</h2>
+                <h3>Banking at the Peak of Intelligence</h3>
+
+                <form method="POST" action="{{ url_for('login') }}">
+                    <input type="text" name="username" placeholder="Username" required>
+                    <div class="password-wrapper">
+                        <input type="password" id="login_password" name="password" placeholder="Password" required>
+                        <span class="toggle-eye" onclick="togglePassword('login_password', this)">👁</span>
+                    </div>                    
+                    <button type="submit" class="button">Login</button>
+                </form>
+
+               <div class="forgot"> 
+                    <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+               </div>
+
+        </div>
+
+         {% if message %}
+        <div class="popup-overlay">
+            <div class="popup-box">
+                <p>{{ message }}</p>
+                <button onclick="closePopup()">OK</button>
+            </div>
+        </div>
+        {% endif %}
+
+        <script>
+            function closePopup() {
+                const popup = document.querySelector('.popup-overlay');
+                if (popup) popup.style.display = 'none';
+            }
+        </script>
+        <script>
+            function togglePassword(id, icon) {
+                const input = document.getElementById(id);
+
+                if (input.type === "password") {
+                    input.type = "text";
+                    icon.textContent = "🙈";
+                } else {
+                    input.type = "password";
+                    icon.textContent = "👁";
+                }
+            }
+        </script>
+    </body>
+</html>

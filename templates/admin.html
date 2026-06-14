@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Vertex Bank</title>
+    <style>
+        body {
+            background: #0b0f0c;
+            color: #e0ffe6;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            align-items: center;
+            background: #000;
+            padding: 15px 30px;
+            border-bottom: 2px solid #00c853;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            color: #00c853;
+            margin: 0;
+            font-size: 28px;
+            transition: margin-left 0.3s ease;
+            margin-left: 100px;
+        }
+        .logout-btn{
+            background:#ff5252;
+            color:white;
+            border:none;
+            padding:12px;
+            border-radius:8px;
+            font-weight:bold;
+            cursor:pointer;
+            margin-bottom:auto;   /* pushes it to bottom */
+        }
+
+        .logout-btn:hover{
+            background:#ff7979;
+        }
+        .logout {
+            background: #ff5252;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            margin-top: 180px;
+        }
+
+        .logout:hover {
+            background: #ff7979;
+        }
+
+        /* ===== Notification Bell ===== */
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            font-size: 24px;
+            color: #00c853;
+            margin-left: auto;
+            
+        }
+
+        .badge {
+            position: absolute;
+            top: -5px;
+            right: -10px;
+            background: red;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+        }
+
+        .alert-dropdown {
+            display: none;
+            position: absolute;
+            right: 30px;
+            top: 60px;
+            background: #000;
+            border: 1px solid #00c853;
+            border-radius: 8px;
+            width: 300px;
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1100;
+        }
+
+        .alert-dropdown a {
+            display: block;
+            padding: 10px;
+            color: #00e676;
+            text-decoration: none;
+        }
+
+        .alert-dropdown a:hover {
+            background: #0b1a10;
+        }
+        /* ===== Fraud Alert Animation ===== */
+
+        @keyframes bellShake {
+            0% { transform: rotate(0); }
+            25% { transform: rotate(15deg); }
+            50% { transform: rotate(-15deg); }
+            75% { transform: rotate(10deg); }
+            100% { transform: rotate(0); }
+        }
+
+        .bell-alert {
+            animation: bellShake 0.6s ease-in-out infinite;
+            color: #ff5252;
+            text-shadow: 0 0 10px red;
+        }
+        /* ===== KPI Cards ===== */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 120px 60px 50px 60px;
+        }
+
+        .stat-card {
+            background: #000;
+            border: 1px solid #00c853;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card h3 {
+            margin: 0;
+            font-size: 16px;
+            color: #aaa;
+        }
+
+        .stat-card p {
+            font-size: 28px;
+            font-weight: bold;
+            color: #00e676;
+            margin-top: 10px;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 12px rgba(0, 200, 83, 0.4);
+        }
+
+        /* ===== Charts ===== */
+        .charts-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 40px;
+            margin: 0 60px 50px 60px;
+        }
+
+        .chart-card {
+            background: #000;
+            border: 1px solid #00c853;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            height: 350px;
+        }
+
+        .chart-card canvas {
+            width: 100% !important;
+            height: 100% !important;
+        }
+
+        /* ===== Hamburger & Slide Menu ===== */
+        .hamburger {
+            position: fixed;
+            top: 18px;
+            left: 10px;
+            font-size: 28px;
+            color: #00c853;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .slide-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            height: 100%;
+            background: #000;
+            border-right: 2px solid #00c853;
+            padding: 70px 15px 20px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            transition: transform 0.3s ease;
+            transform: translateX(-100%);
+            z-index: 1050;
+        }
+
+        .slide-menu.open {
+            transform: translateX(0);
+        }
+
+        .close-btn {
+            align-self: flex-end;
+            font-size: 24px;
+            color: #ff5252;
+            cursor: pointer;
+            margin-bottom: 20px;
+            user-select: none;
+        }
+        .close-btn:hover {
+            color: #ff7979;
+        }
+
+        .action-btn {
+            background: #00c853;
+            color: #000;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .action-btn:hover {
+            background: #00e676;
+            transform: translateX(5px);
+        }
+
+        /* ===== Footer Marquee ===== */
+        .footer-marquee {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background: #000;
+            color: #00c853;
+            padding: 10px 0;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            box-sizing: border-box;
+        }
+
+        .footer-marquee span {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 15s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<div class="navbar">
+    <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+    <h1>VERTEX BANK</h1>
+
+    <!-- Notification Bell  -->
+   <div class="notification-bell {% if alert_count > 0 %}bell-alert{% endif %}" onclick="toggleAlerts()">
+    &#128276;
+    {% if alert_count > 0 %}
+        <span class="badge">{{ alert_count }}</span>
+    {% endif %}
+</div>
+</div>
+
+<!-- Dropdown Alerts -->
+<div id="alertDropdown" class="alert-dropdown">
+    {% for alert in new_alerts %}
+    <a href="{{ url_for('manage_user', account_number=alert.account_number) }}">
+        {{ alert.username }} ({{ alert.account_number }}) 
+        {% if alert.action == 'appealed' %}
+            appealed
+        {% endif %}
+        {{ alert.reason }} - KES {{ "{:,}".format(alert.amount) }}
+    </a>
+    {% endfor %}
+
+    {% if alert_count == 0 %}
+        <p style="padding:10px;">No new alerts</p>
+    {% endif %}
+</div>
+
+<h1 class="dashboard-title" style="margin-top: 100px; text-align:center;">Admin Dashboard</h1>
+<h2 class="welcome" style="text-align:center;">Welcome Admin!</h2>
+
+<!-- KPI Cards -->
+<div class="stats-container">
+    <div class="stat-card">
+        <h3>Total Users</h3>
+        <p>{{ total_users }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Transactions</h3>
+        <p>{{ total_transactions }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Deposits</h3>
+        <p>KES {{ "{:,}".format(total_deposits) }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Withdrawals</h3>
+        <p>KES {{ "{:,}".format(total_withdrawals) }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Transfers</h3>
+        <p>KES {{ "{:,}".format(total_transfers) }}</p>
+    </div>
+    <div class="stat-card">
+        <h3>Total Bank Balance</h3>
+        <p>KES {{ "{:,}".format(total_bank_balance) }}</p>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="charts-container">
+    <div class="chart-card">
+        <canvas id="transactionsChart"></canvas>
+    </div>
+    <div class="chart-card">
+        <canvas id="depositWithdrawChart"></canvas>
+    </div>
+    <div class="chart-card">
+        <canvas id="accountTypeChart"></canvas>
+    </div>
+    <div class="chart-card">
+        <canvas id="bankBalanceChart"></canvas>
+    </div>
+</div>
+
+<!-- Hamburger Slide Menu -->
+<div class="slide-menu" id="slideMenu">
+    <div class="close-btn" onclick="toggleMenu()">&#10005;</div>
+
+    <div class="action-btn" onclick="window.location.href='{{ url_for('signup') }}'">Create User</div>
+    <div class="action-btn" onclick="window.location.href='{{ url_for('deposit') }}'">Deposit</div>
+    <div class="action-btn" onclick="window.location.href='{{ url_for('view_users') }}'">View Users</div>
+
+    <!-- Logout at bottom -->
+    <button class="logout" onclick="window.location.href='{{ url_for('home') }}'">Logout</button>
+</div>
+
+<div class="footer-marquee">
+    <span>Banking at the Peak of Intelligence</span>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+const slideMenu = document.getElementById('slideMenu');
+function toggleMenu() {
+    slideMenu.classList.toggle('open');
+}
+document.addEventListener('click', function(e) {
+    if (slideMenu.classList.contains('open')) {
+        const isClickInside = slideMenu.contains(e.target) || document.querySelector('.hamburger').contains(e.target);
+        if (!isClickInside) slideMenu.classList.remove('open');
+    }
+});
+
+// ===== Notifications Dropdown =====
+function toggleAlerts() {
+    const dropdown = document.getElementById('alertDropdown');
+    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+document.addEventListener('click', function(e) {
+    const dropdown = document.getElementById('alertDropdown');
+    const bell = document.querySelector('.notification-bell');
+    if (!dropdown.contains(e.target) && !bell.contains(e.target)) {
+        dropdown.style.display = 'none';
+    }
+});
+
+// ===== Charts =====
+const ctx1 = document.getElementById('transactionsChart').getContext('2d');
+new Chart(ctx1, {
+    type: 'line',
+    data: {
+        labels: {{ transaction_dates | safe }},
+        datasets: [{
+            label: 'Total Transactions',
+            data: {{ transaction_counts | safe }},
+            borderColor: '#00c853',
+            backgroundColor: 'rgba(0,200,83,0.2)',
+            tension: 0.4,
+            fill: true
+        }]
+    },
+    options: { responsive:true, maintainAspectRatio:false,
+        plugins: { legend:{ labels:{ color:'#00c853' } } },
+        scales: { x:{ ticks:{ color:'#00c853' } }, y:{ ticks:{ color:'#00c853' } } }
+    }
+});
+const ctx2 = document.getElementById('depositWithdrawChart').getContext('2d');
+new Chart(ctx2, {
+    type:'bar',
+    data:{
+        labels:['Deposits','Withdrawals','Transfers'],
+        datasets:[{ label:'KES',
+            data:[{{ total_deposits }}, {{ total_withdrawals }}, {{ total_transfers }}],
+            backgroundColor:['#00e676','#ff5252','#00c853']
+        }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ display:false } },
+        scales:{ x:{ ticks:{ color:'#00c853' } }, y:{ ticks:{ color:'#00c853' } } }
+    }
+});
+const ctx3 = document.getElementById('accountTypeChart').getContext('2d');
+new Chart(ctx3, {
+    type:'pie',
+    data:{
+        labels: {{ account_types | safe }},
+        datasets:[{
+            data: {{ account_type_counts | safe }},
+            backgroundColor:['#00c853','#00e676','#ff5252','#11ff11','#33ff99']
+        }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:'#00c853' } } }
+    }
+});
+const ctx4 = document.getElementById('bankBalanceChart').getContext('2d');
+new Chart(ctx4, {
+    type:'line',
+    data:{
+        labels: {{ balance_dates | safe }},
+        datasets:[{
+            label:'Bank Balance',
+            data: {{ balance_values | safe }},
+            borderColor:'#00e676',
+            backgroundColor:'rgba(0,200,83,0.2)',
+            tension:0.4,
+            fill:true
+        }]
+    },
+    options:{ responsive:true, maintainAspectRatio:false,
+        plugins:{ legend:{ labels:{ color:'#00c853' } } },
+        scales:{ x:{ ticks:{ color:'#00c853' } }, y:{ ticks:{ color:'#00c853' } } }
+    }
+});
+</script>
+</body>
+</html>
