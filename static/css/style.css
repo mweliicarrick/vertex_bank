@@ -1,0 +1,521 @@
+/* ==================================
+   VERTEX BANK GLOBAL STYLES
+   Responsive Design System
+================================== */
+
+
+/* RESET */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+
+html{
+    scroll-behavior:smooth;
+}
+
+
+body{
+
+    font-family:'Segoe UI', Arial, sans-serif;
+
+    background:#0f172a;
+
+    color:#ffffff;
+
+    min-height:100vh;
+
+    overflow-x:hidden;
+
+}
+
+
+/* LINKS */
+
+a{
+
+    text-decoration:none;
+    color:inherit;
+
+}
+
+
+
+/* ==================================
+   NAVIGATION
+================================== */
+
+
+nav,
+.navbar{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:20px 40px;
+
+    background:#111827;
+
+}
+
+
+.logo{
+
+    font-size:25px;
+
+    font-weight:bold;
+
+    color:#38bdf8;
+
+}
+
+
+.nav-links{
+
+    display:flex;
+
+    gap:25px;
+
+    list-style:none;
+
+}
+
+
+.nav-links a:hover{
+
+    color:#38bdf8;
+
+}
+
+
+
+/* ==================================
+   MAIN CONTAINERS
+================================== */
+
+
+.container,
+.content,
+.main,
+.wrapper{
+
+    width:90%;
+
+    max-width:1200px;
+
+    margin:auto;
+
+    padding:30px 0;
+
+}
+
+
+
+
+/* ==================================
+   CARDS
+================================== */
+
+
+.card,
+.box,
+.panel,
+.dashboard-card,
+.form-container{
+
+    background:#1e293b;
+
+    padding:25px;
+
+    border-radius:18px;
+
+    margin:20px auto;
+
+    width:100%;
+
+    max-width:600px;
+
+
+    box-shadow:
+
+    0 10px 30px rgba(0,0,0,0.25);
+
+
+    border:1px solid rgba(255,255,255,0.08);
+
+}
+
+
+
+/* ==================================
+   FORMS
+================================== */
+
+
+form{
+
+    width:100%;
+
+}
+
+
+label{
+
+    display:block;
+
+    margin-top:15px;
+
+    margin-bottom:5px;
+
+}
+
+
+
+input,
+select,
+textarea{
+
+
+    width:100%;
+
+    padding:14px;
+
+    border-radius:10px;
+
+    border:none;
+
+    outline:none;
+
+    background:#0f172a;
+
+    color:white;
+
+    font-size:16px;
+
+}
+
+
+
+input:focus,
+select:focus,
+textarea:focus{
+
+    box-shadow:
+
+    0 0 10px #38bdf8;
+
+}
+
+
+
+/* ==================================
+   BUTTONS
+================================== */
+
+
+button,
+.btn{
+
+    display:inline-block;
+
+    width:auto;
+
+    padding:13px 25px;
+
+    border:none;
+
+    border-radius:30px;
+
+    cursor:pointer;
+
+    margin-top:15px;
+
+    background:
+
+    linear-gradient(
+    135deg,
+    #38bdf8,
+    #8b5cf6
+    );
+
+
+    color:white;
+
+    font-weight:bold;
+
+
+    transition:.3s;
+
+}
+
+
+
+button:hover,
+.btn:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+    0 0 20px rgba(56,189,248,.5);
+
+}
+
+
+
+
+/* ==================================
+   TABLES
+================================== */
+
+
+.table-container{
+
+    width:100%;
+
+    overflow-x:auto;
+
+}
+
+
+
+table{
+
+    width:100%;
+
+    border-collapse:collapse;
+
+    background:#1e293b;
+
+}
+
+
+
+th,
+td{
+
+    padding:15px;
+
+    text-align:left;
+
+    border-bottom:
+
+    1px solid rgba(255,255,255,.1);
+
+}
+
+
+th{
+
+    color:#38bdf8;
+
+}
+
+
+
+
+
+/* ==================================
+   IMAGES
+================================== */
+
+
+img{
+
+    max-width:100%;
+
+    height:auto;
+
+    display:block;
+
+}
+
+
+
+/* ==================================
+   ALERTS
+================================== */
+
+
+.alert{
+
+    padding:15px;
+
+    border-radius:10px;
+
+    margin:15px 0;
+
+}
+
+
+
+/* ==================================
+   MOBILE RESPONSIVENESS
+================================== */
+
+
+@media(max-width:768px){
+
+
+body{
+
+    font-size:15px;
+
+}
+
+
+/* navigation */
+
+
+nav,
+.navbar{
+
+    flex-direction:column;
+
+    gap:15px;
+
+    padding:20px;
+
+}
+
+
+
+.nav-links{
+
+    flex-direction:column;
+
+    align-items:center;
+
+    width:100%;
+
+}
+
+
+
+
+/* containers */
+
+
+.container,
+.content,
+.main,
+.wrapper{
+
+    width:94%;
+
+    padding:15px 0;
+
+}
+
+
+
+
+.card,
+.box,
+.panel,
+.dashboard-card,
+.form-container{
+
+    width:100%;
+
+    padding:20px;
+
+    border-radius:15px;
+
+}
+
+
+
+/* text */
+
+
+h1{
+
+    font-size:28px;
+
+}
+
+
+h2{
+
+    font-size:22px;
+
+}
+
+
+
+
+/* buttons */
+
+
+button,
+.btn{
+
+    width:100%;
+
+}
+
+
+
+
+/* tables */
+
+
+table{
+
+    font-size:13px;
+
+    min-width:600px;
+
+}
+
+
+
+
+}
+
+
+
+/* ==================================
+   SMALL PHONES
+================================== */
+
+
+@media(max-width:420px){
+
+
+h1{
+
+font-size:24px;
+
+}
+
+
+input,
+select,
+textarea{
+
+font-size:15px;
+
+padding:12px;
+
+}
+
+
+
+.card{
+
+padding:15px;
+
+}
+
+
+}
